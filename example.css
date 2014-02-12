@@ -1,18 +1,28 @@
-.my-image{
+body{
+	padding:0;
+	margin:0;
+}
+img{
 	max-width:100%;
-	-webkit-transition: width 0.2s ease-in;
-	transition: width 0.2s ease-in;
+	height:auto;
+	/* strictly optional */
+	-webkit-transition: width 0.2s ease-in, height 0.2s ease-in;
+	transition: width 0.2s ease-in, height 0.2s ease-in;
 }
 
 .my-container{
-	background-color:#EEE;
-	width:300px;
-	height:500px;	
+	margin:0 auto;
+	background-color:#CCC;
+	width:50%;
+	position:absolute;
+	top:100px;
+	right:0;
+	left:0;
+	bottom:100px;
 }
 
 .fit-wrapper{
 	position:relative;
-
 }
 .fit-toggle{
 	position:absolute;
@@ -22,6 +32,6 @@
 	height:20px;
 	background:red;
 }
-.alreadyfit-image .fit-toggle{
+.maxed-image .fit-toggle{
 	display:none;
 }

@@ -9,7 +9,10 @@
 		offsetY: 0,
 		wrapperClass: "fit-wrapper",
 		toggleClass: "fit-toggle",
-		allowUpscaling: false
+		allowUpscaling: false,
+		onFit: undefined,
+		onUnfit: undefined,
+		onMaxed: undefined,
 	};
 
 	function Plugin ( element, options ) {
@@ -59,6 +62,11 @@
 			if(this.settings.auto){
 				this.fit();
 			}
+
+			$(window).resize(debounce(function(){
+				$this.fit();
+			}));
+
 		},
 
 		fit: function(){
@@ -97,15 +105,27 @@
 			}
 
 			if(fit){
-				this.wrapper.removeClass('alreadyfit-image unfit-image').addClass('fit-image');
+				this.wrapper.removeClass('maxed-image unfit-image').addClass('fit-image');
+				
+				if (typeof this.settings.onFit == 'function') {
+					this.settings.onFit.call(this);
+				}
 			} else {
-				this.wrapper.removeClass('fit-image unfit-image').addClass('alreadyfit-image');
-			}	
+				this.wrapper.removeClass('fit-image unfit-image').addClass('maxed-image');
+				
+				if (typeof this.settings.onMaxed == 'function') {
+					this.settings.onMaxed.call(this);
+				}
+			}
 		},
 
 		unfit: function(){
 			this.element.removeAttr('style');
-			this.wrapper.removeClass('alreadyfit-image fit-image').addClass('unfit-image');
+			this.wrapper.removeClass('maxed-image fit-image').addClass('unfit-image');
+			
+			if (typeof this.settings.onUnfit == 'function') {
+				this.settings.onUnfit.call(this);
+			}
 		},
 
 		destroy: function(){
@@ -127,17 +147,17 @@
 			&& instance[ methodOrOptions ]
 			&& typeof( instance[ methodOrOptions ] ) == 'function' ) {
 
-		    return instance[ methodOrOptions ]( Array.prototype.slice.call( arguments, 1 ) ); 
+			return instance[ methodOrOptions ]( Array.prototype.slice.call( arguments, 1 ) ); 
 
 		// CASE: argument is options object or empty = initialise
 		} else if ( typeof methodOrOptions === 'object' || ! methodOrOptions ) {
 
 			return this.each(function () {
-	            if (!$(this).data(pluginName)) {
-	            	instance = new Plugin($(this), methodOrOptions );    // ok to overwrite if this is a re-init
-	                $(this).data(pluginName, instance);
-	            }
-	        });
+				if (!$(this).data(pluginName)) {
+					instance = new Plugin($(this), methodOrOptions );    // ok to overwrite if this is a re-init
+					$(this).data(pluginName, instance);
+				}
+			});
 
 		// CASE: method called before init
 		} else if ( !instance ) {
@@ -149,5 +169,16 @@
 		} else {
 		    $.error( 'Method ' +  methodOrOptions + ' does not exist.' );
 		}
-    };
+	};
+
+	function debounce(fn, delay) {
+		var timer = null;
+		return function () {
+			var context = this, args = arguments;
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				fn.apply(context, args);
+			}, delay);
+		};
+	}
 }( jQuery, window, document ));
