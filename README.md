@@ -15,3 +15,5 @@ Example
 http://jsfiddle.net/davecranwell/M5q7C/
 
 As you reduce your window size, Bill's handsome face will remain fully visible. A toggle button (coloured red for the sake of prominence) will overlay the image and can be clicked to toggle between fit/actual size.
+
+The image will reduce in width as you narrow your browser, but this is due to the `max-width` property in the CSS. The plugin's effect can be best experienced by making your browser wide, but short.
