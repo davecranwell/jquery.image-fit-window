@@ -9,3 +9,9 @@ On art-focused websites it's often important that a large image be visible in it
 
 This plugin helps by reducing the image to fit within the window and gives the user a toggle with which to toggle between the "fit" size and the actual size image.
 
+
+Example
+===============
+http://jsfiddle.net/davecranwell/M5q7C/
+
+As you reduce your window size, Bill's handsome face will remain fully visible. A toggle button (coloured red for the sake of prominence) will overlay the image and can be clicked to toggle between fit/actual size.
