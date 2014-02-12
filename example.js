@@ -1,13 +1,13 @@
 $(function(){
 	$('#my-image-1').imageFitWindow({
 		onFit:function(){
-			console.log('FIT!')
+			console.log('fit')
 		},
 		onMaxed: function(){
-			console.log('maxed!')
+			console.log('maxed')
 		},
 		onUnfit: function(){
-			console.log('unfit!')
+			console.log('unfit')
 		}
 	});
 
