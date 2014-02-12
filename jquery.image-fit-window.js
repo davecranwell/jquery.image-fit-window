@@ -1,18 +1,17 @@
 ;(function ( $, window, document, undefined ) {
 	"use strict";
 
-	var pluginName = "imageFit";
+	var pluginName = "imageFitWindow";
 	
 	var defaults = {
 		auto: 1,
-		container: null,
+		container: window,
 		offsetY: 0,
 		wrapperClass: "fit-wrapper",
 		toggleClass: "fit-toggle",
 		allowUpscaling: false
 	};
 
-	// The actual plugin constructor
 	function Plugin ( element, options ) {
 		this.element = element;
 		this.settings = $.extend({}, defaults, options );
@@ -32,7 +31,7 @@
 			this.element.wrap(this.wrapper).after(this.toggle);
 			this.wrapper = this.element.parent();	
 
-			if(!($this.element.attr('width') && $this.element.attr('height'))){
+			if(!($this.element.attr('width') && !$this.element.attr('height'))){
 				// get image dimensions the hard way of width/heigh attr aren't on tag
 				$('<img />').load(function(){
 					$this.imageWidth = $this.element.data('owidth', $this.element.width());
