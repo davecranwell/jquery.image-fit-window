@@ -1,0 +1,27 @@
+.my-image{
+	max-width:100%;
+	-webkit-transition: width 0.2s ease-in;
+	transition: width 0.2s ease-in;
+}
+
+.my-container{
+	background-color:#EEE;
+	width:300px;
+	height:500px;	
+}
+
+.fit-wrapper{
+	position:relative;
+
+}
+.fit-toggle{
+	position:absolute;
+	top:0;
+	left:0;
+	width:20px;
+	height:20px;
+	background:red;
+}
+.alreadyfit-image .fit-toggle{
+	display:none;
+}
