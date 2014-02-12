@@ -1,0 +1,154 @@
+;(function ( $, window, document, undefined ) {
+	"use strict";
+
+	var pluginName = "imageFit";
+	
+	var defaults = {
+		auto: 1,
+		container: null,
+		offsetY: 0,
+		wrapperClass: "fit-wrapper",
+		toggleClass: "fit-toggle",
+		allowUpscaling: false
+	};
+
+	// The actual plugin constructor
+	function Plugin ( element, options ) {
+		this.element = element;
+		this.settings = $.extend({}, defaults, options );
+		this._defaults = defaults;
+		this._name = pluginName;
+
+		this.wrapper = $('<div></div>').addClass(this.settings.wrapperClass);
+		this.toggle = $('<div title="Toggle enlargement"></div>').addClass(this.settings.toggleClass)
+
+		this.init();
+	}
+
+	Plugin.prototype = {
+		init: function () {
+			var $this = this;
+
+			this.element.wrap(this.wrapper).after(this.toggle);
+			this.wrapper = this.element.parent();	
+
+			if(!($this.element.attr('width') && $this.element.attr('height'))){
+				// get image dimensions the hard way of width/heigh attr aren't on tag
+				$('<img />').load(function(){
+					$this.imageWidth = $this.element.data('owidth', $this.element.width());
+					$this.imageHeight = $this.element.data('oheight', $this.element.height());
+
+					$this.fit();
+				}).attr('src', this.element.attr('src'));
+			} else {
+				// blindly trust image dimensions from height/width attrs, 
+				$this.imageWidth = $this.element.data('owidth', $this.element.attr('width'));
+				$this.imageHeight = $this.element.data('oheight', $this.element.attr('height'));
+
+				$this.fit();
+			}
+
+			this.toggle.click(function(){
+				if($this.wrapper.hasClass('fit-image')){
+					$this.unfit();
+				}else{
+					$this.fit();
+				}
+				return false;
+			});
+
+			if(this.settings.auto){
+				this.fit();
+			}
+		},
+
+		fit: function(){
+			var container, containerWidth, containerHeight, newWidth, newHeight, fit = true;
+
+			// the container in which the image should be made completely visible
+			if(typeof this.settings.container != "undefined"){
+				container = $(this.settings.container);
+			}else{
+				container = this.element.parent();
+			}
+
+			containerWidth = container.width();
+			containerHeight = container.height() - this.settings.offsetY;
+
+			if (containerHeight/containerWidth >= this.imageHeight/this.imageWidth){
+				// portrait
+				newHeight = Math.floor(containerWidth * (this.element.data('oheight') / this.element.data('owidth')));
+
+				if(!this.settings.allowUpscaling && newHeight > this.element.data('oheight')){
+					newHeight = this.element.data('oheight');
+					fit = false;
+				}
+
+				this.element.css({"width":"100%", "height":newHeight});
+			}else{
+				// landscape
+				newWidth = Math.floor(containerHeight * (this.element.data('owidth') / this.element.data('oheight')));
+				
+				if(!this.settings.allowUpscaling && newWidth > this.element.data('owidth')){
+					newWidth = this.element.data('owidth');
+					fit = false;
+				}
+
+				this.element.css({"width":newWidth, "height":"100%"});
+			}
+
+			if(fit){
+				this.wrapper.removeClass('alreadyfit-image unfit-image').addClass('fit-image');
+			} else {
+				this.wrapper.removeClass('fit-image unfit-image').addClass('alreadyfit-image');
+			}	
+		},
+
+		unfit: function(){
+			this.element.removeAttr('style');
+			this.wrapper.removeClass('alreadyfit-image fit-image').addClass('unfit-image');
+		},
+
+		destroy: function(){
+			this.unfit();
+			this.element.unwrap(this.wrapper);
+		}
+	};
+
+	$.fn[ pluginName ] = function ( methodOrOptions ) {
+		if (!$(this).length) {
+			return $(this);
+		}
+
+		var instance = $(this).data(pluginName);
+
+		// CASE: action method (public method on PLUGIN class)
+		if ( instance
+			&& methodOrOptions.indexOf('_') != 0
+			&& instance[ methodOrOptions ]
+			&& typeof( instance[ methodOrOptions ] ) == 'function' ) {
+
+		    return instance[ methodOrOptions ]( Array.prototype.slice.call( arguments, 1 ) ); 
+
+		// CASE: argument is options object or empty = initialise
+		} else if ( typeof methodOrOptions === 'object' || ! methodOrOptions ) {
+
+			return this.each(function () {
+	            if (!$(this).data(pluginName)) {
+	            	instance = new Plugin($(this), methodOrOptions );    // ok to overwrite if this is a re-init
+	                $(this).data(pluginName, instance);
+	            }
+	        });
+
+		// CASE: method called before init
+		} else if ( !instance ) {
+		    $.error( 'Plugin must be initialised before using method: ' + methodOrOptions );
+
+		// CASE: invalid method
+		} else if ( methodOrOptions.indexOf('_') == 0 ) {
+		    $.error( 'Method ' +  methodOrOptions + ' is private!' );
+		} else {
+		    $.error( 'Method ' +  methodOrOptions + ' does not exist.' );
+		}
+    };
+}( jQuery, window, document ));
