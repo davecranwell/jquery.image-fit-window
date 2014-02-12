@@ -7,5 +7,5 @@ It was inspired by the behaviour of the artwork images on Artsy.net (e.g http://
 
 On art-focused websites it's often important that an image be visible in its entirety to be properly appreciated. As websites are often fluid-width and browser dimensions up to the user, it can be tricky to ensure an image is always fully visible while also scaled appropriately, without mushing one of the dimensions.
 
-This plugin is essentially solely aimed at fiting an image within the browser window.
+This plugin helps with this quite specific treatment of images.
 
