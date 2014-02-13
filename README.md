@@ -31,7 +31,7 @@ toggleClass | The classname of the toggle which gets added to the wrapper | "fit
 allowUpscaling | Whether to allow the fitting method to scale an image beyond it's initial size. Generally undesirable | false | boolean
 onFit | Callback function run once the image fitting function has run | undefined | function
 onUnfit | Callback as above, except for when the image has been enlarge to it's full size | undefined | function
-onMaxed | Requires allowUpscaling = false. Callback run when the plugin detects the image can be enlarged no further without upscaling | undefined | function
+onMaxed | Requires `allowUpscaling:false`. Callback run when the plugin detects the image can be enlarged no further without upscaling | undefined | function
 
 Methods
 ============
