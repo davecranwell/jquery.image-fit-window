@@ -82,39 +82,42 @@
 			containerWidth = container.width();
 			containerHeight = container.height() - this.settings.offsetY;
 
-			if (containerHeight/containerWidth >= this.imageHeight/this.imageWidth){
-				// portrait
-				newHeight = Math.floor(containerWidth * (this.element.data('oheight') / this.element.data('owidth')));
-
-				if(!this.settings.allowUpscaling && newHeight > this.element.data('oheight')){
-					newHeight = this.element.data('oheight');
-					fit = false;
+			// check something crazy hasn't happened
+			if (container.width() > 0 && container.height() > 0){
+				if (containerHeight/containerWidth >= this.imageHeight/this.imageWidth){
+					// portrait
+					newHeight = Math.floor(containerWidth * (this.element.data('oheight') / this.element.data('owidth')));
+	
+					if(!this.settings.allowUpscaling && newHeight > this.element.data('oheight')){
+						newHeight = this.element.data('oheight');
+						fit = false;
+					}
+	
+					this.element.css({"width":"100%", "height":newHeight});
+				}else{
+					// landscape
+					newWidth = Math.floor(containerHeight * (this.element.data('owidth') / this.element.data('oheight')));
+					
+					if(!this.settings.allowUpscaling && newWidth > this.element.data('owidth')){
+						newWidth = this.element.data('owidth');
+						fit = false;
+					}
+	
+					this.element.css({"width":newWidth, "height":"100%"});
 				}
-
-				this.element.css({"width":"100%", "height":newHeight});
-			}else{
-				// landscape
-				newWidth = Math.floor(containerHeight * (this.element.data('owidth') / this.element.data('oheight')));
-				
-				if(!this.settings.allowUpscaling && newWidth > this.element.data('owidth')){
-					newWidth = this.element.data('owidth');
-					fit = false;
-				}
-
-				this.element.css({"width":newWidth, "height":"100%"});
-			}
-
-			if(fit){
-				this.wrapper.removeClass('maxed-image unfit-image').addClass('fit-image');
-				
-				if (typeof this.settings.onFit == 'function') {
-					this.settings.onFit.call(this);
-				}
-			} else {
-				this.wrapper.removeClass('fit-image unfit-image').addClass('maxed-image');
-				
-				if (typeof this.settings.onMaxed == 'function') {
-					this.settings.onMaxed.call(this);
+	
+				if(fit){
+					this.wrapper.removeClass('maxed-image unfit-image').addClass('fit-image');
+					
+					if (typeof this.settings.onFit == 'function') {
+						this.settings.onFit.call(this);
+					}
+				} else {
+					this.wrapper.removeClass('fit-image unfit-image').addClass('maxed-image');
+					
+					if (typeof this.settings.onMaxed == 'function') {
+						this.settings.onMaxed.call(this);
+					}
 				}
 			}
 		},
