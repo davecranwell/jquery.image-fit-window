@@ -49,4 +49,6 @@ $('#my-image').imageFitWindow('fit');
 // manually unfit the image
 $('#my-image').imageFitWindow('unfit');
 
+// turn off the plugin completely (turning it back on requires the user to set up the plugin again)
+$('#my-image').imageFitWindow('destroy');
 ```
