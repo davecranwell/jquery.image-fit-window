@@ -1,7 +1,7 @@
 Image Fit Window
 ================
 
-A small jQuery plugin to automatically resize important artwork images to fit within the browser window. You can also have it fit images to any other container besides the window, but the uses for this are few.
+A small jQuery plugin to automatically resize important artwork images to fit within the *visible area of the page* i.e within the first scroll. You can also have it fit images to any other container besides the window, but the uses for this are few.
 
 It was inspired by the behaviour of the artwork images on Artsy.net (e.g http://artsy.net/artwork/shepard-fairey-power-and-glory-iv) and is intended to fulfil a very similar role. 
 
