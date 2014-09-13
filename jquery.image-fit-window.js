@@ -149,9 +149,9 @@
 
 		// CASE: action method (public method on PLUGIN class)
 		if ( instance
+			&& typeof( instance[ methodOrOptions ] ) == 'function' 
 			&& methodOrOptions.indexOf('_') != 0
-			&& instance[ methodOrOptions ]
-			&& typeof( instance[ methodOrOptions ] ) == 'function' ) {
+			&& instance[ methodOrOptions ]) {
 
 			return instance[ methodOrOptions ]( Array.prototype.slice.call( arguments, 1 ) ); 
 
